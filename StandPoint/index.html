@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta name="theme-color" content="#0d110e">
+
+    <meta
+        name="description"
+        content="StandPoint hunting, scouting and hunt tracking app."
+    >
+
+    <title>StandPoint</title>
+
+    <link rel="manifest" href="manifest.json">
+
+    <!-- LEAFLET MAP -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+
+<!-- =====================================================
+     SPLASH SCREEN
+===================================================== -->
+
+<div id="splash-screen">
+
+    <div class="splash-content">
+
+        <img
+            src="standpoint-logo.png"
+            alt="StandPoint"
+            class="splash-logo-image"
+        >
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     MAIN APP
+===================================================== -->
+
+<div id="app">
+
+
+<!-- =====================================================
+     MAP PAGE
+===================================================== -->
+
+<section id="map-page" class="page active">
+
+    <header class="top-bar">
+
+        <div class="brand-area">
+
+            <strong>STANDPOINT</strong>
+
+            <span id="location-text">
+                Hunting Map
+            </span>
+
+        </div>
+
+
+        <button
+            class="icon-button"
+            id="settings-button"
+            type="button"
+            title="Settings"
+        >
+            ⚙️
+        </button>
+
+    </header>
+
+
+
+    <div id="map">
+
+        <!-- REAL LEAFLET MAP -->
+        <div id="leaflet-map"></div>
+
+
+        <!-- MAP CONTROLS -->
+
+        <div class="map-controls">
+
+            <button
+                class="map-control"
+                id="center-gps"
+                type="button"
+                title="Center on GPS"
+            >
+                ◎
+            </button>
+
+
+            <button
+                class="map-control"
+                id="add-marker"
+                type="button"
+                title="Add Marker"
+            >
+                ＋
+            </button>
+
+
+            <button
+                class="map-control"
+                id="layers-button"
+                type="button"
+                title="Switch Map Layer"
+            >
+                ◫
+            </button>
+
+        </div>
+
+
+
+        <!-- MAP INFORMATION -->
+
+        <div class="map-info">
+
+            <div class="info-pill">
+
+                🧭
+
+                <span id="heading">
+                    --
+                </span>
+
+            </div>
+
+
+            <div class="info-pill">
+
+                💨
+
+                <span id="wind">
+                    -- mph
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- MAP TAP MESSAGE -->
+
+        <div
+            id="map-tip"
+            class="map-tip"
+        >
+            Tap and hold the map to place a marker
+        </div>
+
+
+
+        <!-- START HUNT -->
+
+        <button
+            id="start-hunt"
+            class="start-hunt-button"
+            type="button"
+        >
+            ▶ START HUNT
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     HUNT PAGE
+===================================================== -->
+
+<section id="hunt-page" class="page">
+
+    <header class="page-header">
+
+        <h1>Hunt</h1>
+
+        <p>
+            Track your time and movement in the woods.
+        </p>
+
+    </header>
+
+
+
+    <div class="content">
+
+        <div class="card active-hunt-card">
+
+            <span class="card-label">
+                CURRENT HUNT
+            </span>
+
+
+            <h2 id="hunt-status">
+                No Active Hunt
+            </h2>
+
+
+            <div class="hunt-stats">
+
+                <div>
+
+                    <strong id="hunt-time">
+                        00:00:00
+                    </strong>
+
+                    <span>
+                        Time
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong id="hunt-distance">
+                        0.00 mi
+                    </strong>
+
+                    <span>
+                        Distance
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <strong id="hunt-heading">
+                        --
+                    </strong>
+
+                    <span>
+                        Heading
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="hunt-gps-status"
+                class="gps-status"
+            >
+                GPS ready
+            </div>
+
+
+            <button
+                id="hunt-page-start"
+                class="primary-button"
+                type="button"
+            >
+                START HUNT
+            </button>
+
+        </div>
+
+
+
+        <h3 class="section-title">
+            Recent Hunts
+        </h3>
+
+
+        <div id="hunt-history">
+
+            <div class="empty-state">
+
+                <span>🥾</span>
+
+                <p>
+                    Your completed hunts will appear here.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     WEATHER PAGE
+===================================================== -->
+
+<section id="weather-page" class="page">
+
+    <header class="page-header">
+
+        <h1>Weather</h1>
+
+        <p>
+            Current conditions at your hunting location.
+        </p>
+
+    </header>
+
+
+
+    <div class="content">
+
+        <div
+            id="weather-status"
+            class="status-message"
+        >
+            Waiting for your location...
+        </div>
+
+
+
+        <div class="weather-main card">
+
+            <div
+                id="weather-icon"
+                class="weather-icon"
+            >
+                🌤️
+            </div>
+
+
+            <div>
+
+                <span>
+                    Current
+                </span>
+
+                <h2 id="temperature">
+                    --°F
+                </h2>
+
+
+                <p
+                    id="weather-description"
+                    class="weather-description"
+                >
+                    Waiting for weather
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="weather-grid">
+
+            <div class="card small-card">
+
+                <span>
+                    💨 Wind
+                </span>
+
+                <strong id="weather-wind">
+                    --
+                </strong>
+
+            </div>
+
+
+            <div class="card small-card">
+
+                <span>
+                    🧭 Direction
+                </span>
+
+                <strong id="wind-direction">
+                    --
+                </strong>
+
+            </div>
+
+
+            <div class="card small-card">
+
+                <span>
+                    🌡 Pressure
+                </span>
+
+                <strong id="pressure">
+                    --
+                </strong>
+
+            </div>
+
+
+            <div class="card small-card">
+
+                <span>
+                    💧 Humidity
+                </span>
+
+                <strong id="humidity">
+                    --
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="card">
+
+            <span class="card-label">
+                SUN
+            </span>
+
+
+            <div class="sun-row">
+
+                <span>
+                    🌅 Sunrise
+                </span>
+
+                <strong id="sunrise">
+                    --
+                </strong>
+
+            </div>
+
+
+            <div class="sun-row">
+
+                <span>
+                    🌇 Sunset
+                </span>
+
+                <strong id="sunset">
+                    --
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="card">
+
+            <span class="card-label">
+                HUNTING CONDITIONS
+            </span>
+
+
+            <div class="sun-row">
+
+                <span>
+                    🌡 Feels Like
+                </span>
+
+                <strong id="feels-like">
+                    --
+                </strong>
+
+            </div>
+
+
+            <div class="sun-row">
+
+                <span>
+                    👁 Visibility
+                </span>
+
+                <strong id="visibility">
+                    --
+                </strong>
+
+            </div>
+
+
+            <div class="sun-row">
+
+                <span>
+                    🌧 Precipitation
+                </span>
+
+                <strong id="precipitation">
+                    --
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <button
+            id="refresh-weather"
+            class="secondary-button"
+            type="button"
+        >
+            ↻ REFRESH WEATHER
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     DEER ACTIVITY PAGE
+===================================================== -->
+
+<section id="activity-page" class="page">
+
+    <header class="page-header">
+
+        <h1>Deer Activity</h1>
+
+        <p>
+            StandPoint movement estimate from current conditions.
+        </p>
+
+    </header>
+
+
+
+    <div class="content">
+
+        <div class="activity-score-card card">
+
+            <span class="card-label">
+                CURRENT ACTIVITY
+            </span>
+
+
+            <div class="activity-score">
+
+                <strong id="activity-score">
+                    --
+                </strong>
+
+                <span>
+                    / 100
+                </span>
+
+            </div>
+
+
+            <h2 id="activity-rating">
+                Waiting for conditions
+            </h2>
+
+
+            <div class="score-bar">
+
+                <div
+                    id="score-fill"
+                    class="score-fill"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="card">
+
+            <span class="card-label">
+                BEST MOVEMENT WINDOW
+            </span>
+
+            <h2 id="best-window">
+                --
+            </h2>
+
+            <p
+                id="window-description"
+                class="muted-copy"
+            >
+                Weather data is required before StandPoint
+                can estimate movement.
+            </p>
+
+        </div>
+
+
+
+        <div class="card">
+
+            <span class="card-label">
+                CONDITIONS
+            </span>
+
+
+            <div id="condition-list">
+
+                <div class="condition-row">
+
+                    <span>
+                        🌡 Temperature
+                    </span>
+
+                    <strong id="activity-temperature">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="condition-row">
+
+                    <span>
+                        💨 Wind
+                    </span>
+
+                    <strong id="activity-wind">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="condition-row">
+
+                    <span>
+                        🌡 Pressure
+                    </span>
+
+                    <strong id="activity-pressure">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="condition-row">
+
+                    <span>
+                        🌇 Time of Day
+                    </span>
+
+                    <strong id="activity-time">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="condition-row">
+
+                    <span>
+                        🌧 Precipitation
+                    </span>
+
+                    <strong id="activity-precipitation">
+                        --
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="card">
+
+            <span class="card-label">
+                WHY THIS SCORE?
+            </span>
+
+            <div id="activity-reasons">
+
+                <p class="muted-copy">
+                    Once weather loads, StandPoint will show
+                    which conditions raised or lowered the
+                    movement estimate.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="activity-disclaimer">
+
+            StandPoint activity scores are estimates for scouting
+            and planning. Actual deer movement can vary.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     MORE PAGE
+===================================================== -->
+
+<section id="more-page" class="page">
+
+    <header class="page-header">
+
+        <h1>More</h1>
+
+        <p>
+            StandPoint tools, data and settings.
+        </p>
+
+    </header>
+
+
+
+    <div class="content">
+
+        <button
+            class="menu-item"
+            id="manage-markers"
+            type="button"
+        >
+
+            <span>
+                📍
+            </span>
+
+            <div>
+
+                <strong>
+                    Map Markers
+                </strong>
+
+                <small id="marker-count">
+                    0 saved markers
+                </small>
+
+            </div>
+
+            <b>›</b>
+
+        </button>
+
+
+
+        <button
+            class="menu-item"
+            id="trail-camera-menu"
+            type="button"
+        >
+
+            <span>
+                📷
+            </span>
+
+            <div>
+
+                <strong>
+                    Trail Cameras
+                </strong>
+
+                <small>
+                    View saved camera locations
+                </small>
+
+            </div>
+
+            <b>›</b>
+
+        </button>
+
+
+
+        <button
+            class="menu-item"
+            id="stands-menu"
+            type="button"
+        >
+
+            <span>
+                🌲
+            </span>
+
+            <div>
+
+                <strong>
+                    Stands & Blinds
+                </strong>
+
+                <small>
+                    View hunting locations
+                </small>
+
+            </div>
+
+            <b>›</b>
+
+        </button>
+
+
+
+        <button
+            class="menu-item"
+            id="hunt-history-menu"
+            type="button"
+        >
+
+            <span>
+                🥾
+            </span>
+
+            <div>
+
+                <strong>
+                    Hunt History
+                </strong>
+
+                <small id="hunt-count">
+                    0 completed hunts
+                </small>
+
+            </div>
+
+            <b>›</b>
+
+        </button>
+
+
+
+        <div class="card app-info-card">
+
+            <span class="card-label">
+                STANDPOINT
+            </span>
+
+            <strong>
+                HUNT. TRACK. SCOUT.
+            </strong>
+
+            <p>
+                Your hunting locations and hunt history are
+                stored locally on this device.
+            </p>
+
+            <small>
+                StandPoint V1.0
+            </small>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     ADD MARKER MODAL
+===================================================== -->
+
+<div
+    id="marker-modal"
+    class="modal"
+>
+
+    <div class="modal-sheet">
+
+        <div class="modal-handle"></div>
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2>
+                    Add to Map
+                </h2>
+
+                <p id="marker-modal-description">
+                    Select a marker type
+                </p>
+
+            </div>
+
+
+            <button
+                id="close-marker"
+                type="button"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+
+        <div class="marker-grid">
+
+            <button
+                data-marker="camera"
+                type="button"
+            >
+                <span>📷</span>
+                Trail Camera
+            </button>
+
+
+            <button
+                data-marker="stand"
+                type="button"
+            >
+                <span>🌲</span>
+                Tree Stand
+            </button>
+
+
+            <button
+                data-marker="blind"
+                type="button"
+            >
+                <span>⛺</span>
+                Ground Blind
+            </button>
+
+
+            <button
+                data-marker="deer"
+                type="button"
+            >
+                <span>🦌</span>
+                Deer Sighting
+            </button>
+
+
+            <button
+                data-marker="bedding"
+                type="button"
+            >
+                <span>🌾</span>
+                Bedding
+            </button>
+
+
+            <button
+                data-marker="scrape"
+                type="button"
+            >
+                <span>🐾</span>
+                Scrape
+            </button>
+
+
+            <button
+                data-marker="rub"
+                type="button"
+            >
+                <span>🌳</span>
+                Rub
+            </button>
+
+
+            <button
+                data-marker="food"
+                type="button"
+            >
+                <span>🌽</span>
+                Food Source
+            </button>
+
+
+            <button
+                data-marker="water"
+                type="button"
+            >
+                <span>💧</span>
+                Water
+            </button>
+
+
+            <button
+                data-marker="parking"
+                type="button"
+            >
+                <span>🚙</span>
+                Parking
+            </button>
+
+
+            <button
+                data-marker="hazard"
+                type="button"
+            >
+                <span>⚠️</span>
+                Hazard
+            </button>
+
+
+            <button
+                data-marker="custom"
+                type="button"
+            >
+                <span>📍</span>
+                Custom
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     MARKER DETAILS MODAL
+===================================================== -->
+
+<div
+    id="marker-details-modal"
+    class="modal"
+>
+
+    <div class="modal-sheet compact-sheet">
+
+        <div class="modal-handle"></div>
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2 id="marker-details-title">
+                    Marker Details
+                </h2>
+
+                <p>
+                    Add a name or scouting note.
+                </p>
+
+            </div>
+
+
+            <button
+                id="close-marker-details"
+                type="button"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label for="marker-name">
+                Name
+            </label>
+
+            <input
+                id="marker-name"
+                type="text"
+                maxlength="60"
+                placeholder="Example: Creek Stand"
+            >
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label for="marker-notes">
+                Notes
+            </label>
+
+            <textarea
+                id="marker-notes"
+                maxlength="300"
+                rows="4"
+                placeholder="Add scouting notes..."
+            ></textarea>
+
+        </div>
+
+
+
+        <div
+            id="marker-coordinate-preview"
+            class="coordinate-preview"
+        >
+            Location: --
+        </div>
+
+
+
+        <button
+            id="save-marker-details"
+            class="primary-button"
+            type="button"
+        >
+            SAVE MARKER
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     SAVED MARKERS MODAL
+===================================================== -->
+
+<div
+    id="saved-markers-modal"
+    class="modal"
+>
+
+    <div class="modal-sheet list-sheet">
+
+        <div class="modal-handle"></div>
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2>
+                    Saved Markers
+                </h2>
+
+                <p>
+                    View, edit or remove map locations.
+                </p>
+
+            </div>
+
+
+            <button
+                id="close-saved-markers"
+                type="button"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <div id="saved-marker-list">
+
+            <div class="empty-state">
+
+                <span>📍</span>
+
+                <p>
+                    No markers saved yet.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     EDIT MARKER MODAL
+===================================================== -->
+
+<div
+    id="edit-marker-modal"
+    class="modal"
+>
+
+    <div class="modal-sheet compact-sheet">
+
+        <div class="modal-handle"></div>
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2>
+                    Edit Marker
+                </h2>
+
+                <p id="edit-marker-type">
+                    Map location
+                </p>
+
+            </div>
+
+
+            <button
+                id="close-edit-marker"
+                type="button"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label for="edit-marker-name">
+                Name
+            </label>
+
+            <input
+                id="edit-marker-name"
+                type="text"
+                maxlength="60"
+            >
+
+        </div>
+
+
+
+        <div class="form-group">
+
+            <label for="edit-marker-notes">
+                Notes
+            </label>
+
+            <textarea
+                id="edit-marker-notes"
+                maxlength="300"
+                rows="4"
+            ></textarea>
+
+        </div>
+
+
+
+        <div class="button-row">
+
+            <button
+                id="delete-marker"
+                class="danger-button"
+                type="button"
+            >
+                DELETE
+            </button>
+
+
+            <button
+                id="update-marker"
+                class="primary-button"
+                type="button"
+            >
+                SAVE
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     HUNT DETAILS MODAL
+===================================================== -->
+
+<div
+    id="hunt-details-modal"
+    class="modal"
+>
+
+    <div class="modal-sheet compact-sheet">
+
+        <div class="modal-handle"></div>
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2>
+                    Hunt Details
+                </h2>
+
+                <p id="hunt-detail-date">
+                    --
+                </p>
+
+            </div>
+
+
+            <button
+                id="close-hunt-details"
+                type="button"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+
+        <div class="detail-grid">
+
+            <div>
+
+                <span>
+                    Duration
+                </span>
+
+                <strong id="hunt-detail-duration">
+                    --
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Distance
+                </span>
+
+                <strong id="hunt-detail-distance">
+                    --
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <button
+            id="show-hunt-route"
+            class="primary-button"
+            type="button"
+        >
+            SHOW ROUTE ON MAP
+        </button>
+
+
+
+        <button
+            id="delete-hunt"
+            class="danger-button full-button"
+            type="button"
+        >
+            DELETE HUNT
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     TOAST NOTIFICATION
+===================================================== -->
+
+<div
+    id="toast"
+    class="toast"
+    role="status"
+    aria-live="polite"
+>
+    StandPoint
+</div>
+
+
+
+<!-- =====================================================
+     BOTTOM NAVIGATION
+===================================================== -->
+
+<nav class="bottom-nav">
+
+    <button
+        class="nav-button active"
+        data-page="map-page"
+        type="button"
+    >
+
+        <span>
+            🗺️
+        </span>
+
+        Map
+
+    </button>
+
+
+
+    <button
+        class="nav-button"
+        data-page="hunt-page"
+        type="button"
+    >
+
+        <span>
+            🦌
+        </span>
+
+        Hunt
+
+    </button>
+
+
+
+    <button
+        class="nav-button"
+        data-page="weather-page"
+        type="button"
+    >
+
+        <span>
+            ☁️
+        </span>
+
+        Weather
+
+    </button>
+
+
+
+    <button
+        class="nav-button"
+        data-page="activity-page"
+        type="button"
+    >
+
+        <span>
+            📊
+        </span>
+
+        Activity
+
+    </button>
+
+
+
+    <button
+        class="nav-button"
+        data-page="more-page"
+        type="button"
+    >
+
+        <span>
+            ☰
+        </span>
+
+        More
+
+    </button>
+
+</nav>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+></script>
+
+<script src="app.js"></script>
+
+</body>
+</html>
