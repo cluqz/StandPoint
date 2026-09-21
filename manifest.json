@@ -1,0 +1,25 @@
+{
+  "name": "StandPoint",
+  "short_name": "StandPoint",
+  "description": "Hunt. Track. Scout. Hunting maps, scouting markers, weather and hunt tracking.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d110e",
+  "theme_color": "#0d110e",
+  "icons": [
+    {
+      "src": "standpoint-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "standpoint-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
